@@ -11,7 +11,7 @@ from nets import *
 import time, os, copy, argparse
 import multiprocessing
 from torchsummary import summary
-from matplotlib import pyplot as plt
+#from matplotlib import pyplot as plt
 
 # Construct argument parser
 ap = argparse.ArgumentParser()
@@ -25,18 +25,18 @@ train_mode=args["mode"]
 # https://github.com/anilsathyan7/pytorch-image-classification/tree/master
 
 # Set the train and validation directory paths
-train_directory = '/home/rob/Pictures/DES_mites/train/'
-valid_directory = '/home/rob/Pictures/DES_mites/val/'
+train_directory = '/home/rob/Pictures/Tassles/train/'
+valid_directory = '/home/rob/Pictures/Tassles/val/'
 # Set the model save path
-PATH="/home/rob/PycharmProjects/des_mites/models/new_lids.pth"
+PATH="/home/rob/Pictures/Tassles/models/tassle.pth"
 
 # Batch size
-bs = 64
+bs = 128
 vbs = 10 # make batch size for val smaller as not many images!
 # Number of epochs
-num_epochs = 10
+num_epochs = 100
 # Number of classes
-num_classes = 5
+num_classes = 4
 # Number of workers
 num_cpu = multiprocessing.cpu_count()
 
@@ -54,15 +54,15 @@ image_transforms = {
         #transforms.CenterCrop(size=224),
         #transforms.RandomVerticalFlip(),
         transforms.ToTensor(),
-        transforms.Normalize([0.485, 0.456, 0.406],
-                             [0.229, 0.224, 0.225])
+        #transforms.Normalize([0.485, 0.456, 0.406],
+        #                     [0.229, 0.224, 0.225])
     ]),
     'valid': transforms.Compose([
         #transforms.Resize(size=256),
         #transforms.CenterCrop(size=224),
         transforms.ToTensor(),
-        transforms.Normalize([0.485, 0.456, 0.406],
-                             [0.229, 0.224, 0.225])
+        #transforms.Normalize([0.485, 0.456, 0.406],
+        #                     [0.229, 0.224, 0.225])
     ])
 }
 # mean = [0.485, 0.456, 0.406] and std = [0.229, 0.224, 0.225]" Using the mean and std of Imagenet is a common practice. They are calculated based on millions of images. If you want to train from scratch on your own dataset, you can calculate the new mean and std. Otherwise, using the Imagenet pretrianed model with its own mean and std is recommended.
@@ -100,12 +100,12 @@ device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 
 if train_mode=='finetune':
     # Load a pretrained model - Resnet18
-    #print("\nLoading resnet18 for finetuning ...\n")
-    #model_ft = models.resnet18(pretrained=True)
+    print("\nLoading resnet18 for finetuning ...\n")
+    model_ft = models.resnet18(pretrained=True)
     #print("\nLoading resnet34 for finetuning ...\n")
     #model_ft = models.resnet34(pretrained=True)
-    print("\nLoading resnet152 for finetuning ...\n")
-    model_ft = models.resnet152(pretrained=True)
+    #print("\nLoading resnet152 for finetuning ...\n")
+    #model_ft = models.resnet152(pretrained=True)
     #print("\nLoading Googlenet for finetuning ...\n")
     #model_ft = models.googlenet(pretrained=True)
 
@@ -146,7 +146,7 @@ model_ft = model_ft.to(device)
 print('Model Summary:-\n')
 for num, (name, param) in enumerate(model_ft.named_parameters()):
     print(num, name, param.requires_grad )
-summary(model_ft, input_size=(3, 224, 224))
+summary(model_ft, input_size=(3, 400, 500))
 print(model_ft)
 
 # Loss function
@@ -251,5 +251,5 @@ print("\nSaving the model...")
 torch.save(model_ft, PATH)
 
 '''
-Sample run: python train.py --mode=finetue
+Sample run: python train.py --mode=finetune
 '''
