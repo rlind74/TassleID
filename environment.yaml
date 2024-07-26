@@ -1,0 +1,24 @@
+name: resnet
+channels:
+    - pytorch
+    - nvidia
+    - conda-forge
+dependencies:
+    - python=3.9
+    - pip=23.0
+    - pytorch-cuda==11.8
+    - pytorch
+    - torchsde
+    - torchvision
+    - einops
+    - transformers>=4.25.1
+    - safetensors>=0.3.0
+    - aiohttp
+    - pyyaml
+    - Pillow
+    - scipy
+    - tqdm
+    - matplotlib
+    - tensorboard
+    - pip:
+       - torchsummary
