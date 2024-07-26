@@ -34,7 +34,7 @@ PATH="/home/rob/Pictures/Tassles/models/tassle.pth"
 bs = 128
 vbs = 10 # make batch size for val smaller as not many images!
 # Number of epochs
-num_epochs = 100
+num_epochs = 15
 # Number of classes
 num_classes = 4
 # Number of workers
@@ -45,13 +45,14 @@ num_cpu = multiprocessing.cpu_count()
 image_transforms = { 
     'train': transforms.Compose([
         #transforms.RandomResizedCrop(size=256, scale=(0.8, 1.0)),
-        transforms.RandomRotation(degrees=45),
-        transforms.RandomHorizontalFlip(),
-        transforms.RandomVerticalFlip(),
+        #transforms.RandomRotation(degrees=45),
+        #transforms.RandomHorizontalFlip(),
+        #transforms.RandomVerticalFlip(),
         #transforms.RandomAffine(degrees=(0, 180), translate=(0.0, 0.1), scale=(0.95, 1.05)),
         transforms.ColorJitter(brightness=0.05, contrast=0.05, saturation=0.05, hue=0.05),
         #transforms.RandomAdjustSharpness(2.0, p=0.5),
         #transforms.CenterCrop(size=224),
+        #transforms.Resize((224,224)),
         #transforms.RandomVerticalFlip(),
         transforms.ToTensor(),
         #transforms.Normalize([0.485, 0.456, 0.406],
@@ -60,6 +61,7 @@ image_transforms = {
     'valid': transforms.Compose([
         #transforms.Resize(size=256),
         #transforms.CenterCrop(size=224),
+        #transforms.Resize((224,224)),
         transforms.ToTensor(),
         #transforms.Normalize([0.485, 0.456, 0.406],
         #                     [0.229, 0.224, 0.225])

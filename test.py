@@ -13,16 +13,16 @@ import os
 #IMDIR = '/home/rob/Pictures/Rana/val/1/'
 #IMDIR = '/home/rob/Pictures/Mite4Classes/finalDataSet1234/3/'
 
-IMDIR = '/home/rob/Pictures/DES_mites/test/NCH/'
+IMDIR = '/home/rob/Pictures/Tassles/test/Medium/'
 #MODEL='models/resnet18.pth'
-MODEL='models/new_lids.pth'
+MODEL='models/tassle.pth'
 
 # Load the model for testing
-model = torch.load(MODEL)
+model = torch.load(MODEL, weights_only=False)
 model.eval()
 
 # Class labels for prediction
-class_names=['0','100','GMC', 'NC', 'NCH']
+class_names=['DNA','High','Marginal', 'Medium']
 
 
 files=Path(IMDIR).resolve().glob('*.*')
@@ -35,17 +35,17 @@ filenames = os.listdir(IMDIR) # RJL extracts file names to output later
 
 # Preprocessing transformations
 preprocess=transforms.Compose([
-        transforms.Resize(size=256),
-        transforms.CenterCrop(size=224),
+        #transforms.Resize(size=256),
+        #transforms.CenterCrop(size=224),
         transforms.ToTensor(),
-        transforms.Normalize([0.485, 0.456, 0.406],
-                             [0.229, 0.224, 0.225])
+        #transforms.Normalize([0.485, 0.456, 0.406],
+        #                     [0.229, 0.224, 0.225])
     ])
 
 # Enable gpu mode, if cuda available
 device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 
-saveOutString = "0, 100, GMC, NC, NCH, , ,prediction, filename"
+saveOutString = "DNA, High, Marginal, Medium, , ,prediction, filename"
 saveOutString = saveOutString+'\n' # new line
 myText = open(IMDIR+'my_text_file_softmax.csv',"w")
 
@@ -54,7 +54,7 @@ pngCheck = 'png'
 imageNumber=0 # use own numbering in case it skips files to avoid out of bounds errors
 with torch.no_grad():
     for num,img in enumerate(images):
-      if jpgCheck in img.name:
+      if pngCheck in img.name:
          img=Image.open(img).convert('RGB')
          inputs=preprocess(img).unsqueeze(0).to(device)
          outputs = model(inputs)
@@ -88,7 +88,6 @@ with torch.no_grad():
 # save out txt file
 myText.write(saveOutString)
 myText.close()
-
 
 
 
