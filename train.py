@@ -31,10 +31,10 @@ valid_directory = '/home/rob/Pictures/Tassles/val/'
 PATH="/home/rob/Pictures/Tassles/models/tassle.pth"
 
 # Batch size
-bs = 128
+bs = 32
 vbs = 10 # make batch size for val smaller as not many images!
 # Number of epochs
-num_epochs = 15
+num_epochs = 10
 # Number of classes
 num_classes = 4
 # Number of workers
@@ -102,12 +102,12 @@ device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 
 if train_mode=='finetune':
     # Load a pretrained model - Resnet18
-    print("\nLoading resnet18 for finetuning ...\n")
-    model_ft = models.resnet18(pretrained=True)
+    #print("\nLoading resnet18 for finetuning ...\n")
+    #model_ft = models.resnet18(pretrained=True)
     #print("\nLoading resnet34 for finetuning ...\n")
     #model_ft = models.resnet34(pretrained=True)
-    #print("\nLoading resnet152 for finetuning ...\n")
-    #model_ft = models.resnet152(pretrained=True)
+    print("\nLoading resnet152 for finetuning ...\n")
+    model_ft = models.resnet152(pretrained=True)
     #print("\nLoading Googlenet for finetuning ...\n")
     #model_ft = models.googlenet(pretrained=True)
 
